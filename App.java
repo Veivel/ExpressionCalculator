@@ -18,7 +18,7 @@ ACKNOWLEDGEMENTS:
 
 */
 
-public class TP2 {
+public class App {
     public static void main(String[] args) {
         JFrame frame = new CalculatorFrame();
 

@@ -121,6 +121,7 @@ public class ExpressionConverter {
 
     /**
      * Mengkonversi infix yang sudah tokenized menjadi postfix.
+     * @param tokens of Infix expression (StringTokenizer)
      * @return Postfix expression (List<String>)
      * @throws IOException
      */
@@ -132,12 +133,18 @@ public class ExpressionConverter {
         // Meng-iterasi setiap token pada tokenized infix expression
         while (tokens.hasMoreTokens()) {
             String next = tokens.nextToken();
-            // TODO: handle if first or second token is operator (e.g. -)
             
             if (isOperator(next)) { 
                 // jika token selanjutnya adalah operator
                 char nextOperator = next.charAt(0);
-                if (operatorStack.empty()) { // jangan peek jika kosong. soalnya pasti di-push juga.
+
+                if (operandCount + operatorCount == 0 && next.equals("-")) {
+                    // jika expression dimulai dengan bilangan negatif, perbaiki (tetap valid)
+                    postfixExpression.add("0");
+                    operandCount++;
+
+                } else if (operatorStack.empty()) { 
+                    // jangan peek jika kosong. soalnya pasti di-push juga.
                     operatorStack.push(nextOperator);
                     continue;
     

@@ -20,9 +20,14 @@ ACKNOWLEDGEMENTS:
 
 public class App {
     public static void main(String[] args) {
+        gui(500, 350);
+    }
+
+    // Untuk input-output dengan graphical user interface
+    public static void gui(int w, int h) {
         JFrame frame = new CalculatorFrame();
 
-        frame.setSize(500, 350);
+        frame.setSize(w, h);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Infix to Postfix Converter & Calculator");
         frame.setVisible(true);

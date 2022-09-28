@@ -1,11 +1,10 @@
-import java.io.IOException;
 import java.util.EmptyStackException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-public class ExpressionConverter {
+public class Converter {
 
     /**
      * @param expression (Infix) in string form
@@ -113,10 +112,10 @@ public class ExpressionConverter {
      * Mengkonversi infix yang sudah tokenized menjadi postfix.
      * @param tokens of Infix expression (StringTokenizer)
      * @return Postfix expression (List<String>)
-     * @throws IOException
+     * @throws CalculationException
      */
     public static List<String> getPostfixExpression(StringTokenizer tokens) throws CalculationException{
-        List<String> postfixExpression = new LinkedList<String>();
+        List<String> postfix = new LinkedList<String>();
         Stack<Character> operatorStack = new Stack<Character>();
         int operatorCount = 0, operandCount = 0, parenthesisBalance = 0;
 
@@ -131,7 +130,7 @@ public class ExpressionConverter {
 
                     if (operandCount + operatorCount == 0 && operatorPriority(nextOperator) == 2) {
                         // jika expression dimulai dengan + atau -, perbaiki (tetap valid)
-                        postfixExpression.add("0");
+                        postfix.add("0");
                         operandCount++;
 
                     } else if (operatorStack.empty()) { 
@@ -151,7 +150,7 @@ public class ExpressionConverter {
                         // jika kurungnya kurung akhir, pop operator sampai ketemu kurung awal.
                         parenthesisBalance--;
                         while (parenthesisPriority(operatorStack.peek()) < 0) {
-                            postfixExpression.add(operatorStack.pop().toString());
+                            postfix.add(operatorStack.pop().toString());
                             operatorCount++;                            
                         }
                         if (parenthesisPriority(operatorStack.peek()) == 1) operatorStack.pop();
@@ -160,7 +159,7 @@ public class ExpressionConverter {
                     } else while (operatorPriority(nextOperator) < 4 && 
                     operatorPriority(nextOperator) <= operatorPriority(operatorStack.peek())) {
                         // jika operator selanjutnya bukan pangkat, namun prioritas lebih tinggi dari yang di top of stack
-                        postfixExpression.add(operatorStack.pop().toString());
+                        postfix.add(operatorStack.pop().toString());
                         operatorCount++;
                         if (operatorStack.empty()) {
                             break;
@@ -173,34 +172,33 @@ public class ExpressionConverter {
         
                 } else { 
                     // jika token selanjutnya operand
-                    postfixExpression.add(next);
+                    postfix.add(next);
                     operandCount++;
                 }
             }
         } catch (EmptyStackException e) {
-            throw new CalculationException("Missing parenthesis.", postfixExpression);
+            throw new CalculationException("Missing parenthesis.", postfix);
         }
         
         // Ketika infix sudah habis/selesai, pop semua operator yang tersisa pada stack.
         while (!operatorStack.empty()) {
-            System.out.println(postfixExpression.toString());
             if (isParenthesis(operatorStack.peek())) {
                 operatorStack.pop(); // jangan masukkan tanda kurung ke postfix
             } else {
-                postfixExpression.add(operatorStack.pop().toString());
+                postfix.add(operatorStack.pop().toString());
                 operatorCount++;
             }
         }
         
         // Jika kekurangan/kelebihan operand
         if (operandCount != operatorCount + 1) {
-            throw new CalculationException("Missing operator/operands.", postfixExpression);
+            throw new CalculationException("Missing operator/operands.", postfix);
         }
 
         if (parenthesisBalance != 0) {
-            throw new CalculationException("Missing parenthesis", postfixExpression);
+            throw new CalculationException("Missing parenthesis", postfix);
         }
     
-        return postfixExpression;
+        return postfix;
     }
 }

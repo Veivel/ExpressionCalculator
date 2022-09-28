@@ -2,10 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-import java.io.IOException;
 import java.util.StringTokenizer;
-import java.util.EmptyStackException;
 import java.util.List;
+
+/*
+ * Class yang mengandung window utama untuk program.
+ */
 
 public class CalculatorFrame extends JFrame{
     // Komponen JFrame
@@ -40,9 +42,9 @@ public class CalculatorFrame extends JFrame{
                 } else {
                     List<String> postfixExpression;
                     try {
-                        infix = ExpressionConverter.standardizeInfix(infix);
+                        infix = Converter.standardizeInfix(infix);
                         StringTokenizer tokens = new StringTokenizer(infix);
-                        postfixExpression = ExpressionConverter.getPostfixExpression(tokens);
+                        postfixExpression = Converter.getPostfixExpression(tokens);
                         textfieldStatus.setText("Conversion & calculation successful!");
                     } catch (CalculationException e) {
                         textfieldStatus.setText(e.getMessage());
@@ -50,12 +52,15 @@ public class CalculatorFrame extends JFrame{
                     }
                         
                     try {
-                        textfieldPostfix.setText(PostfixCalculator.cleanPostfix(postfixExpression));
-                        long res = PostfixCalculator.calculateFromPostfix(postfixExpression);
+                        textfieldPostfix.setText(Evaluator.cleanPostfix(postfixExpression));
+                        long res = Evaluator.calculateFromPostfix(postfixExpression);
                         textfieldResult.setText(String.valueOf(res));
                     } catch (CalculationException e) {
                         textfieldStatus.setText(e.getMessage());
                         textfieldResult.setText(String.valueOf(e.getResult()));
+                    } catch (ArithmeticException e) {
+                        textfieldStatus.setText("Division by zero: undefined");
+                        textfieldResult.setText("-");
                     }
                 }
             }

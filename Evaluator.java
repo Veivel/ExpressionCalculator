@@ -2,24 +2,26 @@ import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
 
-// import ExpressionConverter;
+/*
+ * Kelas yang mengandung semua keperluan evaluator postfix expression.
+ */
 
-public class PostfixCalculator{
+public class Evaluator{
 
     /**
-     * @param postfixExpression
-     * @return Hasil perhitungan (long) dari postfixExpression
+     * @param postfix
+     * @return Hasil perhitungan (long) dari postfix
      * @throws EmptyStackException
      */
-    public static long calculateFromPostfix(List<String> postfixExpression) throws CalculationException{
+    public static long calculateFromPostfix(List<String> postfix) throws CalculationException{
         Stack<Long> resStack = new Stack<Long>();
         long a = 0, b = 0;
 
         try {
-            while (postfixExpression.size() > 0) {
-                String next = postfixExpression.remove(0);
+            while (postfix.size() > 0) {
+                String next = postfix.remove(0);
     
-                if (ExpressionConverter.isOperator(next)) {
+                if (Converter.isOperator(next)) {
                     a = resStack.pop();
                     b = resStack.pop();
                     resStack.push(calculate(a, b, next));

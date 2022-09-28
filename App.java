@@ -33,20 +33,19 @@ public class App {
         frame.setVisible(true);
     }
 
-    // Untuk input-output dengan command line interface
-    public static void cli() {
-        Scanner sc = new Scanner(System.in);
+    // public static void cli() {
+    //     Scanner sc = new Scanner(System.in);
 
-        String inp = sc.nextLine().replace(" ", "") + " ";
-        StringTokenizer tokens = new StringTokenizer(ExpressionConverter.standardizeInfix(inp));
+    //     String inp = sc.nextLine().replace(" ", "") + " ";
+    //     StringTokenizer tokens = new StringTokenizer(ExpressionConverter.standardizeInfix(inp));
 
-        try {
-            List<String> postfixExpression = ExpressionConverter.getPostfixExpression(tokens);
-            System.out.println(PostfixCalculator.calculateFromPostfix(postfixExpression));
-        } catch(Exception e) {
-            System.out.println(e);
-        }
+    //     try {
+    //         List<String> postfixExpression = ExpressionConverter.getPostfixExpression(tokens);
+    //         System.out.println(PostfixCalculator.calculateFromPostfix(postfixExpression));
+    //     } catch(Exception e) {
+    //         System.out.println(e);
+    //     }
         
-        sc.close();
-    }
+    //     sc.close();
+    // }
 }

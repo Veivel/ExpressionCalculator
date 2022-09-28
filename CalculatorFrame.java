@@ -15,6 +15,7 @@ public class CalculatorFrame extends JFrame{
     private JTextField textfieldPostfix = new JTextField();
     private JButton btnCalculate = new JButton("Calculate!");
     private JTextField textfieldResult = new JTextField("<Result>");
+    private JTextField textfieldStatus = new JTextField("Status");
 
     public CalculatorFrame() {
         this.setLayout( // Set panel layout
@@ -35,22 +36,26 @@ public class CalculatorFrame extends JFrame{
                 String infix = textfieldInfix.getText().replace(" ", "") + " ";
 
                 if (infix.equals(" ")) {
-                    textfieldResult.setText("Error: Invalid Infix Expression");
+                    textfieldStatus.setText("Input cannot be empty!");
                 } else {
+                    List<String> postfixExpression;
                     try {
-                        StringTokenizer tokens = new StringTokenizer(ExpressionConverter.standardizeInfix(infix));
-                        List<String> postfixExpression = ExpressionConverter.getPostfixExpression(tokens);
-                        textfieldPostfix.setText(ExpressionConverter.cleanPostfix(postfixExpression));
+                        infix = ExpressionConverter.standardizeInfix(infix);
+                        StringTokenizer tokens = new StringTokenizer(infix);
+                        postfixExpression = ExpressionConverter.getPostfixExpression(tokens);
+                        textfieldStatus.setText("Conversion & calculation successful!");
+                    } catch (CalculationException e) {
+                        textfieldStatus.setText(e.getMessage());
+                        postfixExpression = e.getPostfix();
+                    }
                         
+                    try {
+                        textfieldPostfix.setText(PostfixCalculator.cleanPostfix(postfixExpression));
                         long res = PostfixCalculator.calculateFromPostfix(postfixExpression);
                         textfieldResult.setText(String.valueOf(res));
-
-                    } catch(IOException e) {
-                        textfieldResult.setText(e.getMessage());
-                    } catch(EmptyStackException e) {
-                        textfieldResult.setText("Missing open parenthesis.");
-                    } catch(Exception e) {
-                        textfieldResult.setText(e.toString());
+                    } catch (CalculationException e) {
+                        textfieldStatus.setText(e.getMessage());
+                        textfieldResult.setText(String.valueOf(e.getResult()));
                     }
                 }
             }
@@ -65,15 +70,23 @@ public class CalculatorFrame extends JFrame{
         textfieldInfix.setMaximumSize(dimensionBtn);
         textfieldPostfix.setMaximumSize(dimensionBtn);
         textfieldResult.setMaximumSize(dimensionBtn);
+        textfieldStatus.setMaximumSize(
+            new Dimension(400, 30)
+        );
 
         labelInfix.setAlignmentX(CENTER_ALIGNMENT);
         textfieldInfix.setAlignmentX(CENTER_ALIGNMENT);
+
         labelPostfix.setAlignmentX(CENTER_ALIGNMENT);
         textfieldPostfix.setAlignmentX(CENTER_ALIGNMENT);
         textfieldPostfix.setEditable(false);
+
         btnCalculate.setAlignmentX(CENTER_ALIGNMENT);
         textfieldResult.setAlignmentX(CENTER_ALIGNMENT);
         textfieldResult.setEditable(false);
+
+        textfieldStatus.setAlignmentX(CENTER_ALIGNMENT);
+        textfieldStatus.setEditable(false);
 
         this.add(Box.createRigidArea(
             new Dimension(100, 50)
@@ -85,6 +98,7 @@ public class CalculatorFrame extends JFrame{
         this.add(textfieldPostfix);
         this.add(btnCalculate);
         this.add(textfieldResult);
+        this.add(textfieldStatus);
     }
 
 }

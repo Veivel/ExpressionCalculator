@@ -19,6 +19,9 @@ public class CalculatorFrame extends JFrame{
     private JTextField textfieldResult = new JTextField("<Result>");
     private JTextField textfieldStatus = new JTextField("Status");
 
+    /*
+     * Constructor untuk window utama
+     */
     public CalculatorFrame() {
         this.setLayout( // Set panel layout
             new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS)

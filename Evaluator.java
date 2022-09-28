@@ -11,7 +11,7 @@ public class Evaluator{
     /**
      * @param postfix
      * @return Hasil perhitungan (long) dari postfix
-     * @throws EmptyStackException
+     * @throws CalculationException
      */
     public static long calculateFromPostfix(List<String> postfix) throws CalculationException{
         Stack<Long> resStack = new Stack<Long>();
@@ -61,7 +61,7 @@ public class Evaluator{
     }
 
     /**
-     * @param postfixList
+     * @param postfixList (List<String>)
      * @return Bentuk string dari Postfix
      */
     public static String cleanPostfix(List<String> postfixList) {

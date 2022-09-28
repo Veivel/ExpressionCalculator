@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
+/*
+ * Kelas yang mengandung segala keperluan untuk konversi dari infix ke postfix.
+ */
+
 public class Converter {
 
     /**
@@ -176,6 +180,8 @@ public class Converter {
                     operandCount++;
                 }
             }
+
+        // Ketika stack tidak bisa dievaluasi lengkap karena kurung yang tidak tepat
         } catch (EmptyStackException e) {
             throw new CalculationException("Missing parenthesis.", postfix);
         }
@@ -195,6 +201,7 @@ public class Converter {
             throw new CalculationException("Missing operator/operands.", postfix);
         }
 
+        // Jika ada kurung awal yang tidak diakhiri / kurung akhir yang tidak berawal
         if (parenthesisBalance != 0) {
             throw new CalculationException("Missing parenthesis", postfix);
         }
